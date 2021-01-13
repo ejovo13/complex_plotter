@@ -11,26 +11,31 @@ classdef plotter
         C               % The color values used for contour projections and 2d color plots
         Z               % The matrix of input values for f(z)
         foZ             % The matrix of f(z)
-        plotType
+        funName
     end
     
     methods        
-        function obj = plotter(anonFun, bounds, plotType)
+        function obj = plotter(anonFun, bounds, plotOnInstantiation)
             %PLOTTER Construct an instance of this class
             %   Pass an anonymous complex function to the constructor that
             %   you wish to be plotted
             assert(isa(anonFun, 'function_handle'), "First parameter must be a function handle")
             if nargin == 1
                 bounds = [-10 10 -10 10];
-                plotType = '3d';
+                plotOnInstantiation = 1;
             elseif nargin == 2
-                plotType = '3d';
+                plotOnInstantiation = 1;
             end
             
-            obj.f = anonFun;
-            obj.plotType = plotType;
+            
+            obj.f = anonFun;                        
             obj.bounds = bounds; % Set the bounds and compute f(z)
-            obj.plot3;
+
+            obj = obj.updateName;
+
+            if(plotOnInstantiation)
+                obj.plot3;
+            end
         end
         
         %% Plotting methods
@@ -81,9 +86,7 @@ classdef plotter
             end
 
             %PLOT3 Plot the Real, Imag, and Modulus of f(z) in the same figure
-            fun_name = string(char(obj.f));
-            fun_name = erase(fun_name, "@(z)");
-            figure('NumberTitle', 'off', 'Name', join(["3d plots of" fun_name]));
+            figure('NumberTitle', 'off', 'Name', join(["3d plots of" obj.funName]));
             % disp(fun_name);
             tiledlayout(1, 4);
             nexttile
@@ -101,6 +104,45 @@ classdef plotter
 
         end
         
+        function mesh(obj) 
+            %MESH_INTERSECT Plot a mesh of the real and imag parts of f(z)
+            figure('NumberTitle', 'off', 'Name', "Mesh");
+            r_mesh = mesh(real(obj.Z), imag(obj.Z), real(obj.foZ));
+            hold on
+            i_mesh = mesh(real(obj.Z), imag(obj.Z), imag(obj.foZ));
+            hold off       
+            axis square 
+            my_map = [1 1 1; 0 0 0];
+            colormap(gca, my_map);
+            set(r_mesh, 'edgecolor', 'none', 'facecolor', [1 1 1]);
+            set(i_mesh, 'edgecolor', 'none', 'facecolor', [0 0 0]);
+            set(gca, 'Color', [.5 .5 .5]);
+            xlabel('Re$(z)$', 'Interpreter', 'latex');
+            ylabel('Im$(z)$', 'Interpreter', 'latex');
+            zlabel('$f(z)$', 'Interpreter', 'latex');
+            title("f(z)", 'Interpreter', 'latex');
+        end
+
+        function surf(obj) 
+            %MESH_INTERSECT Plot a mesh of the real and imag parts of f(z)
+            % figure('NumberTitle', 'off', 'Name', "Surf");
+            r_surf = surf(real(obj.Z), imag(obj.Z), real(obj.foZ));
+            hold on
+            i_surf = surf(real(obj.Z), imag(obj.Z), imag(obj.foZ));
+            hold off       
+            axis square 
+            my_map = [1 1 1; 0 0 0];
+            colormap(gca, my_map);
+            set(r_surf, 'edgecolor', 'none', 'facecolor', [1 1 1]);
+            set(i_surf, 'edgecolor', 'none', 'facecolor', [0 0 0]);
+            set(gca, 'Color', [.5 .5 .5]);
+            xlabel('Re$(z)$', 'Interpreter', 'latex');
+            ylabel('Im$(z)$', 'Interpreter', 'latex');
+            zlabel('$f(z)$', 'Interpreter', 'latex');
+            title(join(["$f(z) = " obj.funName "$"]), 'Interpreter', 'latex');
+            legend('Re(x)', 'Im(y)', 'Interpreter', 'latex', 'Location', 'northeast')
+        end
+
         %% Domain Plotting
 
         function plotColorSimple(obj)
@@ -135,12 +177,39 @@ classdef plotter
         end
 
 
-        function zoom(obj, xy_value) 
+        function obj = zoom(obj, xy_value) 
 
             obj.bounds = [-xy_value xy_value -xy_value xy_value];
             obj.plot3;
 
         end
+
+        function L = limit(obj, z, r) 
+            % I have to approach z from all directions...
+            % I think that the best way 
+            eps = 1e-5;
+            if nargin == 2
+                r = 1e-12;
+            end
+            theta = linspace(-pi, pi, 100);
+            
+
+            disk = r*exp(theta*i) + z;
+            f_disk = arrayfun(obj.f, disk);
+            disk_minus_d1 = f_disk - f_disk(1); % Subtract the first element, check if the resulting matrices entries are less then epsilon
+            tiledlayout(1, 2);
+            nexttile
+            plot(disk);
+            nexttile
+            plot(f_disk);
+            condition = disk_minus_d1 < eps;
+            if all(condition) 
+                L = f_disk(1);
+            else 
+                L = 'Limit not found';
+            end
+        end
+
 
 
 
@@ -183,6 +252,7 @@ classdef plotter
 
             obj.f = newFun;
             obj = obj.applyFun;
+            obj = obj.updateName;
             % disp("set.f called");
         end
 
@@ -192,7 +262,12 @@ classdef plotter
             obj = obj.applyFun;
         end
 
-        
+        function obj = updateName(obj)
+            fun_name = string(char(obj.f));
+            fun_name = erase(fun_name, "@(z)");
+            obj.funName = fun_name;
+        end
+            
         
         %% Helper Methods
         
@@ -261,25 +336,78 @@ classdef plotter
             
             
         end
-        
-       
-        
-        
+            
         function arc(obj)
             comp.plotter.draw_arc(obj.max_r, obj.min_rad, obj.max_rad);
         end
-        
-     
-        
-        
-        
-        
-        function print_info(obj)
-            %PRINT_INFO Print the function associated with this plotter
-        end
-        
-         
+                 
     end
+
+    methods(Static)
+
+        function obj = trig
+            b = 10;
+            
+            tiledlayout(2, 3);
+
+            nexttile;
+            obj = comp.plotter(@(z)sin(z), [-b b -b b], 0);
+            obj.surf;
+
+            nexttile;
+            obj.f = @(z)cos(z);
+            obj.surf;
+
+            nexttile;
+            obj.f = @(z)tan(z);
+            obj.surf;
+
+            nexttile;
+            obj.f = @(z)asin(z);
+            obj.surf;
+
+            nexttile;
+            obj.f = @(z)acos(z);
+            obj.surf;
+
+            nexttile;
+            obj.f = @(z)atan(z);
+            obj.surf;
+        end
+
+        function obj = poly
+            b = 10;
+            
+            tiledlayout(2, 3);
+
+            nexttile;
+            obj = comp.plotter(@(z) z, [-b b -b b], 0);
+            obj.surf;
+
+            nexttile;
+            obj.f = @(z)z^2;
+            obj.surf;
+
+            nexttile;
+            obj.f = @(z)z^3;
+            obj.surf;
+
+            nexttile;
+            obj.f = @(z)z^4;
+            obj.surf;
+
+            nexttile;
+            obj.f = @(z)z^5;
+            obj.surf;
+
+            nexttile;
+            obj.f = @(z)z^6;
+            obj.surf;
+        end
+    end
+
+
+
       
 end
 
