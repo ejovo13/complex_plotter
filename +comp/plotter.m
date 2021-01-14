@@ -3,8 +3,7 @@ classdef plotter
     %   Detailed explanation goes here
     
     properties
-        f              % f(z)
-        bounds
+        f              % f(z)        
     end
     
     properties(Hidden)
@@ -12,6 +11,7 @@ classdef plotter
         Z               % The matrix of input values for f(z)
         foZ             % The matrix of f(z)
         funName
+        bounds
     end
     
     methods        
