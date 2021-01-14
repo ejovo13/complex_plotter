@@ -9,7 +9,7 @@ To instantiate a plotter class, we simply pass a function handle to the construc
 ```MATLAB   
 
 my_fun = @(z) z^4 + 10;
-p = comp.plotter(my_fun) % Equivalent to p = comp.plotter(@(z) z^2 + 1) 
+p = comp.plotter(my_fun) % Equivalent to p = comp.plotter(@(z) z^4 + 10) 
 
 ```
 Upon object creation, a series of plots will automatically be generated. Let's examine them.
@@ -19,7 +19,7 @@ Upon object creation, a series of plots will automatically be generated. Let's e
 In order to visualize complex valued functions, we put the real part of z on the x-axis and the imag part on the y-axis.
 The first plot then maps the real part of f(z) to the z-axis. The second plot maps the imaginary part of f(z) to the z-axis. The third plot maps the modulus of f(z) to the z-axis. The fourth plot is the most unique - it is a domain coloring plot where the arg of f(z) is mapped to hsv values. We can use the domain coloring plot to quickly - visually - locate the zeros of our function. 
 
-The default domain of f(z) is a 100 x 100 meshed grid whose real and imaginary bounds are from -10 to 10. Let's use the *zoom* function to get a closer look at the function's behavior near the zeros. We can see from the domain coloring plot that the zeros within +-2 +- 2
+The default domain of f(z) is a 100 x 100 meshed grid whose real and imaginary bounds are from -10 to 10. Let's use the *zoom* function to get a closer look at the function's behavior near the zeros. We can see from the domain coloring plot that the zeros are within +-2 +- 2
 
 ```MATLAB   
 
@@ -43,7 +43,7 @@ p.plot3;
 
 Funky!
 
-Another type of plot that the comp.plotter class offers is a plot of intersecting surfaces, called using the surf function. This plot is really just a combination of the first two plots from plot3 merged into a single axis. This way how the imaginary and real parts of the output dance together.
+Another type of plot that the comp.plotter class offers is a plot of intersecting surfaces, called using the surf function. This plot is really just a combination of the first two plots from plot3 merged into a single axis. We can see how the imaginary and real parts of the output dance together.
 
 ```MATLAB 
 
@@ -54,7 +54,7 @@ p.surf;
 
 ![](./media/1_z.png)
 
-The comp.plotter has two static functions to build intuiton for how "fundamental" (according to me, anyways) appear in the complex world.
+The comp.plotter has two static functions to build intuiton for how "fundamental" (according to me, anyways) functions appear in the complex world.
 
 ```MATLAB
 
