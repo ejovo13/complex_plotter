@@ -36,7 +36,7 @@ We can change the function by setting the *f* attribute of the plotter class. Do
 ```MATLAB  
 
 p.f = @(z) z^i;
-p.plot;
+p.plot3;
 
 ```
 ![](./media/z_i.png) 
