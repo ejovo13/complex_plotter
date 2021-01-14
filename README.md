@@ -59,11 +59,14 @@ The comp.plotter has two static functions to build intuiton for how "fundamental
 ```MATLAB
 
 comp.plotter.trig; % Plot complex valued trig functions
-comp.plotter.poly; % Plot complex valued polynomials
 
 ```
 
 ![](./media/trig.png)
+
+```MATLAB
+comp.plotter.poly; % Plot complex valued polynomials
+```
 
 ![](./media/poly.png)
 
