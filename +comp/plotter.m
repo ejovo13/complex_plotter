@@ -499,7 +499,7 @@ classdef plotter
                 % filename = strcat("julia ", num2str(ii), ".png");
                 % imwrite(Im, map, filename);
                 if ii == 1
-                    imwrite(Im, map, filename, 'gif', 'LoopCount', Inf, 'DelayTime', delay);
+                    imwrite(Im, map, filename, 'gif', 'LoopCount', Inf, 'DelayTime', 0.01);
                 else
                     imwrite(Im, map, filename, 'gif', 'WriteMode', 'append', 'DelayTime', delay);
                 end
