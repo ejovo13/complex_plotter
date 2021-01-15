@@ -210,6 +210,10 @@ classdef plotter
             end
         end
 
+        function z = zeros(obj)
+
+        end
+
 
 
 
@@ -340,6 +344,11 @@ classdef plotter
         function arc(obj)
             comp.plotter.draw_arc(obj.max_r, obj.min_rad, obj.max_rad);
         end
+
+        function iterates(compFun, n)
+        end
+
+
                  
     end
 
@@ -404,7 +413,105 @@ classdef plotter
             obj.f = @(z)z^6;
             obj.surf;
         end
+
+        function Im = julia(c, sb, res, max_iter, shouldPlot)
+            %JULIA Plot the julia set for polynomial z^2 + c
+            if nargin < 5
+                shouldPlot = 1;
+                if nargin < 4
+                    max_iter = 50;
+                    if nargin < 3
+                        res = 1000;
+                        if nargin < 2
+                            sb = 2;
+                            if nargin < 1
+                                c = -0.8 + 0.156i;
+                            end
+                        end
+                    end
+                end
+            end
+
+            
+
+            X = linspace(-sb, sb, res);
+            Y = linspace(-sb, sb, res);
+            [X, Y] = meshgrid(X, Y);
+            Z = X + Y*i;
+            C = ones(size(Z));
+
+            r = (1 + sqrt(1 + 4*abs(c)))/2;
+
+            f = @(z) (z^2 + c);
+
+            for ii = 1:res
+                for jj = 1:res
+                    iter = 1;
+
+                    z = Z(ii, jj);
+
+                    for kk = 1:max_iter
+                        if abs(z) > r
+                            C(ii, jj) = kk/max_iter;
+                            break
+                        end
+                        z = f(z);
+                    end
+
+                    if kk == max_iter
+                        C(ii, jj) = 0;
+                    end                    
+                end
+            end
+            
+            if (shouldPlot) 
+                    
+                disp("Julia set made, plotting")
+                p = pcolor(real(Z), imag(Z), C);
+                colormap(hot(256))
+                set(p, 'edgecolor', 'none');
+                colorbar;
+                axis square
+            end
+
+            Im = C;
+        end
+
+        function juliaToGIF(nSteps, duration)
+            if nargin < 2
+                duration = 10;
+                if nargin < 1
+                    nSteps = 100;
+                end
+            end
+
+            delay = duration/nSteps;
+            theta = linspace(0, 2*pi, nSteps);
+            C = exp(theta*i);
+            map = hot(256);
+
+            filename = 'test_julia.gif';
+
+            for ii = 1:nSteps                
+                Im  = comp.plotter.julia(C(ii), 1.8, 600, 50, 0);
+                Im = uint8(rescale(Im, 0, 256));
+
+                % filename = strcat("julia ", num2str(ii), ".png");
+                % imwrite(Im, map, filename);
+                if ii == 1
+                    imwrite(Im, map, filename, 'gif', 'LoopCount', Inf, 'DelayTime', delay);
+                else
+                    imwrite(Im, map, filename, 'gif', 'WriteMode', 'append', 'DelayTime', delay);
+                end
+            end
+
+        end
+
+
+
     end
+
+
 
 
 
