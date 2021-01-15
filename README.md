@@ -4,6 +4,42 @@ While working through the coursera module [Introduction to Complex Analysis](htt
 
 The comp.plotter class is the result of this ambition.
 
+## Version 1.2
+
+Version 1.2 introduces the functionality to plot julia sets for functions of the form f(z) = z^2 + c. With this release, I learned how to work with images in MATLAB and how to export graphics to gifs.
+
+We call the static function "julia" to display the julia set.
+
+```MATLAB
+
+c = i;
+comp.plotter.julia(c) % Plot the julia set of f(z) = z^2 + i
+
+```
+
+| C | -0.4 + 0.6i | 0.285 + 0.01i | -0.835 - 0.2321i | -0.8i |
+| --- | --- | --- | --- | --- |
+| Julia Set | ./media/col1.png | ./media/col2.png | ./media/col3.png | ./media/col4.png |
+
+Specific values of C were taken from the [Julia Set](https://en.wikipedia.org/wiki/Julia_set) wikipedia
+
+What I'm most proud of is the following gif. This can be created using the juliaToGIF static function.
+
+```MATLAB
+
+numSteps = 100 % number of frames in the .gif
+duration = 5 % Duration in seconds
+
+comp.plotter(numSteps, duration);
+
+```
+
+![](./media/test_julia.gif)
+
+This gif was inspired by [this](https://en.wikipedia.org/wiki/Julia_set#/media/File:JSr07885.gif) fantastic visualization.
+
+
+
 To instantiate a plotter class, we simply pass a function handle to the constructor. The function handle can be defined or anonymous, there is no difference.
 
 ```MATLAB   
