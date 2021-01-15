@@ -419,7 +419,7 @@ classdef plotter
             if nargin < 5
                 shouldPlot = 1;
                 if nargin < 4
-                    max_iter = 50;
+                    max_iter = 250;
                     if nargin < 3
                         res = 1000;
                         if nargin < 2
@@ -493,7 +493,7 @@ classdef plotter
             filename = 'test_julia.gif';
 
             for ii = 1:nSteps                
-                Im  = comp.plotter.julia(C(ii), 1.8, 600, 50, 0);
+                Im  = comp.plotter.julia(C(ii), 1.8, 600, 150, 0);
                 Im = uint8(rescale(Im, 0, 256));
 
                 % filename = strcat("julia ", num2str(ii), ".png");
