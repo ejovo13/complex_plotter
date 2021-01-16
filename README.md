@@ -21,7 +21,7 @@ comp.plotter.julia(c) % Plot the julia set of f(z) = z^2 + i
 | --- | --- | --- | --- | --- |
 | Julia Set | ./media/col1.png | ./media/col2.png | ./media/col3.png | ./media/col4.png |
 
-Specific values of C were taken from the [Julia Set](https://en.wikipedia.org/wiki/Julia_set) wikipedia
+Specific values of C were taken from the [Julia Set](https://en.wikipedia.org/wiki/Julia_set) wikipedia. I love the contrast of red and black so I plotted the julia sets using the 'hot' colormap.
 
 What I'm most proud of is the following gif. This can be created using the juliaToGIF static function.
 
