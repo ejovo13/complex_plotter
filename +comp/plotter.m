@@ -492,8 +492,12 @@ classdef plotter
 
             filename = 'test_julia.gif';
 
+            quarter = uint16(nSteps/4);
+            half = uint16(nSteps/2);
+            three_quarters = uint16(nSteps*3/4);
+
             for ii = 1:nSteps                
-                Im  = comp.plotter.julia(C(ii), 1.8, 600, 150, 0);
+                Im  = comp.plotter.julia(C(ii), 1.8, 1000, 300, 0);
                 Im = uint8(rescale(Im, 0, 256));
 
                 % filename = strcat("julia ", num2str(ii), ".png");
@@ -503,6 +507,16 @@ classdef plotter
                 else
                     imwrite(Im, map, filename, 'gif', 'WriteMode', 'append', 'DelayTime', delay);
                 end
+
+                if ii == quarter
+                    disp("1/4");
+                elseif ii == half
+                    disp("1/2");
+                elseif ii == three_quarters
+                    disp("3/4")
+                end
+                
+
             end
 
         end
