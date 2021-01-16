@@ -37,7 +37,7 @@ comp.plotter(numSteps, duration);
 
 ```
 
-![](./media/test_julia.gif)
+![](./media/julia_final.gif)
 
 This gif was inspired by [this](https://en.wikipedia.org/wiki/Julia_set#/media/File:JSr07885.gif) fantastic visualization.
 

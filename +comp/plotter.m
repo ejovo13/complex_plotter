@@ -497,7 +497,7 @@ classdef plotter
             three_quarters = uint16(nSteps*3/4);
 
             for ii = 1:nSteps                
-                Im  = comp.plotter.julia(C(ii), 1.8, 1000, 300, 0);
+                Im  = comp.plotter.julia(C(ii), 1.8, 3000, 300, 0);
                 Im = uint8(rescale(Im, 0, 256));
 
                 % filename = strcat("julia ", num2str(ii), ".png");
@@ -515,7 +515,7 @@ classdef plotter
                 elseif ii == three_quarters
                     disp("3/4")
                 end
-                
+
 
             end
 
