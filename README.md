@@ -17,9 +17,12 @@ comp.plotter.julia(c) % Plot the julia set of f(z) = z^2 + i
 
 ```
 
-| C | -0.4 + 0.6i | 0.285 + 0.01i | -0.835 - 0.2321i | -0.8 + 0.156i |
-| --- | --- | --- | --- | --- |
-| Julia Set | ![](./media/col1.png) | ![](./media/col2.png) | ![](./media/col3.png) | ![](./media/col4.png) |
+| C |  Julia Set | 
+| --- | --- |
+|-0.4 + 0.6i |![](./media/col1.png) |
+| 0.285 + 0.01i |![](./media/col2.png) | 
+| -0.835 - 0.2321i | ![](./media/col3.png) |
+| -0.8 + 0.156i |![](./media/col4.png) |
 
 Specific values of C were taken from the [Julia Set](https://en.wikipedia.org/wiki/Julia_set) wikipedia. I love the contrast of red and black so I plotted the julia sets using the 'hot' colormap.
 
