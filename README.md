@@ -33,7 +33,7 @@ What I'm most proud of is the following gif. This can be created using the julia
 numSteps = 100 % number of frames in the .gif
 duration = 5 % Duration in seconds
 
-comp.plotter(numSteps, duration);
+comp.plotter.juliaToGIF(numSteps, duration);
 
 ```
 
